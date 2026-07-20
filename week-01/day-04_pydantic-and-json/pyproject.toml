@@ -12,10 +12,3 @@ dependencies = [
     "pydantic>=2.13.5",
     "python-dotenv>=1.2.4",
 ]
-
-[project.scripts]
-day-04-pydantic-and-json = "day_04_pydantic_and_json:main"
-
-[build-system]
-requires = ["uv_build>=0.12.5,<0.13.0"]
-build-backend = "uv_build"

@@ -14,10 +14,3 @@ dependencies = [
     "python-docx>=1.2.0",
     "python-dotenv>=1.2.4",
 ]
-
-[project.scripts]
-day-05-ai-resume-evaluator = "day_05_ai_resume_evaluator:main"
-
-[build-system]
-requires = ["uv_build>=0.12.5,<0.13.0"]
-build-backend = "uv_build"

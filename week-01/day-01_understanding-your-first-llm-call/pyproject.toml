@@ -11,10 +11,3 @@ dependencies = [
     "groq>=1.7.0",
     "python-dotenv>=1.2.4",
 ]
-
-[project.scripts]
-day-01-understanding-your-first-llm-call = "day_01_understanding_your_first_llm_call:main"
-
-[build-system]
-requires = ["uv_build>=0.12.5,<0.13.0"]
-build-backend = "uv_build"
