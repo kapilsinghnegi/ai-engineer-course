@@ -1,0 +1,18 @@
+[project]
+name = "day-10-personal-portfolio"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Kapil Singh Negi", email = "124447041+kapilsinghnegi@users.noreply.github.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi>=0.143.0",
+    "groq>=1.7.0",
+    "pydantic>=2.14.1",
+    "pypdf>=6.20.1",
+    "python-docx>=1.2.0",
+    "python-dotenv>=1.2.4",
+    "uvicorn>=0.54.0",
+]
