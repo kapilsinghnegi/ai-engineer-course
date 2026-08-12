@@ -140,29 +140,10 @@ These sentences have little semantic relationship, so their embeddings would gen
 
 ### The basic workflow
 
-Sentence A
-
-“There is a traffic jam.”
-
-Embedding model
-
-Vector A
-
-[0.12, -0.08, 0.34, ...]
-
-Sentence B
-
-“Traffic is very heavy.”
-
-Embedding model
-
-Vector B
-
-[0.15, -0.06, 0.31, ...]
-
-Compare vectors
-
-Calculate a similarity score
+1. Sentence A: “There is a traffic jam.” -> Embedding model -> Vector A: [0.12, -0.08, 0.34, ...]
+2. Sentence B: “Traffic is very heavy.” -> Embedding model -> Vector B: [0.15, -0.06, 0.31, ...]
+3. Compare vectors
+4. Calculate a similarity score
 
 The vector values above are illustrative, not actual model output.
 
@@ -211,11 +192,9 @@ Higher similarity generally means a stronger match; lower distance generally mea
 
 ## Generating embeddings with Python
 
-The instructor uses Python with NumPy and Sentence Transformers.
-
 ### Step 1: Install the libraries
 
-Using `uv`, as demonstrated in the lesson:
+Using `uv`:
 
 ```
 uv add numpy sentence-transformers
@@ -376,29 +355,12 @@ The retrieved document can then be supplied to the LLM as context.
 
 ### The complete embedding-based RAG flow
 
-Knowledge base
-
-Documents are split into useful chunks
-
-Embedding model
-
-Convert each chunk into a vector
-
-Vector database
-
-Store vectors and associated text or metadata
-
-User query
-
-Convert the question into an embedding
-
-Similarity search
-
-Find the most relevant stored vectors
-
-LLM
-
-Use retrieved context to generate an answer
+1. Knowledge base: Documents are split into useful chunks
+2. Embedding model: Convert each chunk into a vector
+3. Vector database: Store vectors and associated text or metadata
+4. User query: Convert the question into an embedding
+5. Similarity search: Find the most relevant stored vectors
+6. LLM: Use retrieved context to generate an answer
 
 A vector database such as Qdrant can store and search embeddings efficiently. For a small dataset, you can also calculate similarities directly in Python without a dedicated vector database.
 
