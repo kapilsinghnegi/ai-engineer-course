@@ -273,7 +273,7 @@ The underlying principle is correct: if the number of embeddings grows, their st
 For an embedding with `d` dimensions, `N` vectors, and `b` bytes per numerical value, the approximate raw vector storage is:
 
 ```
-Storage ~~ N × d × b
+Storage ≈ N × d × b
 ```
 
 For example, using 384-dimensional embeddings stored as 32-bit floating-point values:
