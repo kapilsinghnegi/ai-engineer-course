@@ -1,0 +1,12 @@
+[project]
+name = "day-16-chunking-strategies-for-rag"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Kapil Singh Negi", email = "124447041+kapilsinghnegi@users.noreply.github.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "langchain-text-splitters>=1.1.3",
+]
