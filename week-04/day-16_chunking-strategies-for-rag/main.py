@@ -36,7 +36,7 @@ for i, chunk in enumerate(paragraph.split_text(text), 1):
     )
 
 # 3. Recursive Chunking
-recursive = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=0)
+recursive = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=20)
 
 print("\n============== RECURSIVE ==============")
 
