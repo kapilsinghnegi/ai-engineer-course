@@ -119,7 +119,7 @@ def run_agent(question: str, max_iterations: int = 5):
         messages.append(message)
 
         if not message.tool_calls:
-            print("\n Final Answer:")
+            print("\nFinal Answer:")
             print(message.content)
             return message.content
 
