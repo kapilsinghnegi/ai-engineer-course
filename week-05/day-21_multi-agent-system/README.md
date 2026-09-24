@@ -86,6 +86,61 @@ For example, a research agent could use a stronger reasoning model, while an ema
 
 Neither architecture is automatically better. The correct choice depends on the task and measured performance. 
 
+## How a multi-agent system works
+
+Let's look at the architecture through a educational YouTube production team: a teacher creates the content, an editor prepares the final video, and an uploader publishes it. A manager coordinates the work.
+
+The important concept is **task dependency**: an editor cannot edit a video that hasn't been created, and an uploader shouldn't publish a video before editing is complete.
+
+The same logic applies to AI agents.
+
+### Example: Search agent + maths agent + manager
+
+Suppose the user asks:
+
+> Find the height of the Eiffel Tower and the Burj Khalifa in metres. Calculate what percentage of the Burj Khalifa's height the Eiffel Tower is, and how many Eiffel Towers stacked together would equal the Burj Khalifa's height.
+
+The workflow can be:
+
+**Step 1 — Manager receives the request**
+
+It identifies that current or reliable height information is needed before calculations can be performed.
+
+**Step 2 — Search agent**
+
+It searches for both heights and returns the facts it found. It doesn't need to handle the later calculations.
+
+**Step 3 — Manager tracks the results**
+
+It retains the returned heights and decides which task should happen next.
+
+**Step 4 — Maths agent**
+
+It uses the calculator tool to calculate the percentage and height ratio from the supplied figures.
+
+**Step 5 — Manager returns the answer**
+
+It combines the search results and calculations into one response.
+
+### Why does the manager keep notes?
+
+The manager needs to remember what the specialist agents returned. In a simple implementation, this can be represented by a variable, a message history, or a structured object.
+
+For example:
+
+```python
+notes = {
+    "eiffel_tower_height_m": None,
+    "burj_khalifa_height_m": None,
+    "percentage": None,
+    "height_ratio": None,
+}
+```
+
+The search agent supplies the first two values. The maths agent calculates the last two. The manager uses those results to build the final answer.
+
+This example illustrates **shared workflow state**. The notes don't have to be a physical file; they can live in memory or in a graph's state object.
+
 ## Why use multiple agents?
 
 The instructor's central point is that multi-agent architecture is useful when tasks are sufficiently distinct to benefit from specialization.
@@ -158,3 +213,92 @@ The multi-agent version can involve additional LLM calls and repeated input/outp
 - **Total tokens:** input tokens plus output tokens.
 
 If each agent receives a long history or repeats data that another agent already processed, token usage may rise substantially.
+
+## Code Implementation
+
+The implementation exercise compares two approaches **without LangGraph**, so you can understand the orchestration logic before introducing a framework.
+
+### Approach A: Single agent
+
+The single-agent implementation has:
+
+- One `ask_llm()` function.
+- A web-search tool using Tavily.
+- A Python calculator tool.
+- A model that decides which tool to call.
+- A maximum-attempt limit to stop repeated tool calls.
+- Token-usage tracking.
+
+The important property is that **one agent makes the tool-selection decisions for the whole task**. It can search, use the search results in a calculation, and continue if it needs more information.
+
+### Approach B: Multi-agent without LangGraph
+
+The instructor describes three LLM-call functions:
+
+| Function | Responsibility | Tool access |
+|---|---|---|
+| `ask_manager()` | Choose the next specialist and track progress | No execution tools in the intended design |
+| `ask_search()` | Find requested information | Web search |
+| `ask_maths()` | Perform calculations | Calculator |
+
+The manager must keep track of the user's request, the results returned by the specialist agents, and which steps remain.
+
+### Why use a maximum-attempt limit?
+
+This helps prevent an agent from repeatedly calling tools without completing the task.
+
+A robust implementation should also handle:
+
+- Repeated calls with the same arguments.
+- Invalid tool names or arguments.
+- Empty or irrelevant search results.
+- API rate limits and timeouts.
+- A manager that repeatedly selects the same specialist.
+- Incomplete answers when the attempt limit is reached.
+
+A maximum-attempt limit is a safeguard, not a guarantee that the task will be completed correctly.
+
+### How should token usage be compared?
+
+The instructor's experiment compares the single-agent and multi-agent runs on a task requiring both search and calculation. A fair comparison should use the same question, equivalent tools, the same underlying model where appropriate, and equivalent success criteria.
+
+Record at least:
+
+| Metric | What it tells you |
+|---|---|
+| Input tokens | How much information was sent to the models |
+| Output tokens | How much the models generated |
+| Total LLM calls | How many model requests were made |
+| Tool calls | How often external functions were executed |
+| Completion success | Whether the task was answered correctly |
+| Latency | How long the workflow took |
+| Cost | The actual cost under the applicable pricing |
+
+## Important Questions and Answers
+
+**Q1 What is a multi-agent system?**
+A system in which multiple agents have defined responsibilities and coordinate to complete a task. They may use the same underlying model or different models.
+
+**Q2 What is the difference between a single-agent and a multi-agent system?**
+A single agent can manage the task and use multiple tools. A multi-agent system distributes responsibilities across agents and coordinates their work.
+
+**Q3 What is an orchestrator or supervisor agent?**
+An agent responsible for deciding which specialist should handle a task, tracking results, and coordinating the workflow. 
+
+**Q4 Why might you use multi-agent?**
+When responsibilities are logically distinct, tool access should be restricted by role, or different tasks benefit from different models or contexts. 
+
+**Q5 Why can multi-agent systems be more expensive?**
+They may introduce extra LLM calls, handoffs, repeated context, and longer outputs. The actual difference depends on implementation and workload.
+
+**Q6 Do multi-agent systems require different LLM models?**
+No. Different agents can use the same model with different instructions and tool access, or use different models when requirements justify it.
+
+**Q7 Does using multiple agents guarantee better accuracy?**
+No. Specialization can help, but coordination mistakes and error propagation can reduce accuracy. Evaluate both architectures on representative tasks.
+
+**Q8 How do you prevent an agent from looping indefinitely?**
+Use maximum iteration limits, timeouts, repeated-action detection, tool-call limits, and explicit completion conditions.
+
+**Q9 When should you introduce multi-agent architecture?**
+Start with a single agent, measure its performance, identify a concrete limitation, and test whether delegation improves the relevant metrics enough to justify its cost.
