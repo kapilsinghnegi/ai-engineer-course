@@ -97,3 +97,15 @@ This repository contains my **daily study notes, code implementations, experimen
 </details>
 
 ---
+
+
+<details>
+  <summary><b>Week 07: Deployment + Fine-tuning</b></summary>
+
+| Chapter                                     | Notes                                                                                      | Code                                                                           |
+| :------------------------------------------ | :----------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------- |
+| **Deployment Fundamentals**                        | [Notes](./week-07/day-27_deployment-fundamentals/README.md)                         | - |
+
+</details>
+
+---
